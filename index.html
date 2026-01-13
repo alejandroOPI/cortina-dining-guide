@@ -163,6 +163,48 @@
             color: var(--color-muted);
             font-size: var(--size-sm);
         }
+        /* Image hover effect */
+        .art-figure img {
+            transition: transform 0.6s ease-out, filter 0.6s ease-out;
+        }
+        .art-figure:hover img {
+            transform: scale(1.02);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .hero {
+            animation: fadeInUp 1s ease-out;
+        }
+        section {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* Fallback for reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            section {
+                opacity: 1;
+                transform: none;
+            }
+            .hero {
+                animation: none;
+            }
+        }
+
         @media (max-width: 600px) {
             .hero { padding: 4rem 0 2rem; }
             section { margin: 4rem 0; }
@@ -312,5 +354,23 @@
     <footer>
         <p>Prepared for Alejandro & Alejandra · Babymoon 2026</p>
     </footer>
+
+    <script>
+        // Scroll reveal animation
+        const sections = document.querySelectorAll('section');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        sections.forEach(section => observer.observe(section));
+    </script>
 </body>
 </html>
