@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
     <style>
         :root {
             --font-display: 'Cormorant Garamond', Georgia, serif;
@@ -205,10 +207,57 @@
             }
         }
 
+        /* Map styles */
+        .map-section {
+            margin: 4rem 0;
+        }
+        .map-container {
+            height: 500px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .map-title {
+            font-family: var(--font-display);
+            font-size: var(--size-lg);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--color-text);
+        }
+        .mapboxgl-popup-content {
+            padding: 15px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            max-width: 250px;
+        }
+        .mapboxgl-popup-content h4 {
+            font-family: var(--font-display);
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+        }
+        .mapboxgl-popup-content p {
+            margin: 0;
+            color: var(--color-muted);
+            font-size: 0.85rem;
+        }
+        .marker {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+        .marker-rifugio { background: #4a7c59; }
+        .marker-local { background: #8b6914; }
+        .marker-star { background: #c41e3a; }
+        .marker-hotel { background: #2563eb; }
+
         @media (max-width: 600px) {
             .hero { padding: 4rem 0 2rem; }
             section { margin: 4rem 0; }
             .restaurant { padding-left: 1rem; }
+            .map-container { height: 350px; }
         }
     </style>
 </head>
@@ -225,6 +274,18 @@
                 <img src="https://images.unsplash.com/photo-1730422206439-cba909ebb3a3?w=1200&q=80" alt="Cortina d'Ampezzo with the Dolomites in the background">
                 <figcaption>Cortina d'Ampezzo, Belluno — Photo by Deiziane Silva</figcaption>
             </figure>
+
+            <!-- MAP SECTION -->
+            <section class="map-section">
+                <h3 class="map-title">The Territory</h3>
+                <div id="map" class="map-container"></div>
+                <p style="text-align: center; margin-top: 1rem; font-size: var(--size-sm); color: var(--color-muted);">
+                    <span style="display: inline-block; width: 12px; height: 12px; background: #2563eb; border-radius: 50%; margin-right: 4px;"></span> Your Hotel
+                    <span style="margin-left: 1rem; display: inline-block; width: 12px; height: 12px; background: #4a7c59; border-radius: 50%; margin-right: 4px;"></span> Mountain Huts
+                    <span style="margin-left: 1rem; display: inline-block; width: 12px; height: 12px; background: #8b6914; border-radius: 50%; margin-right: 4px;"></span> Locals' Tables
+                    <span style="margin-left: 1rem; display: inline-block; width: 12px; height: 12px; background: #c41e3a; border-radius: 50%; margin-right: 4px;"></span> Michelin Stars
+                </p>
+            </section>
 
             <!-- CHAPTER I -->
             <section class="chapter" id="rifugi">
@@ -371,6 +432,54 @@
         });
         
         sections.forEach(section => observer.observe(section));
+
+        // Mapbox initialization
+        mapboxgl.accessToken = 'pk.eyJ1IjoiYW1hemE4NyIsImEiOiJjbWs0Y29nZWwwNXpwM3ByNTB1OWJ6a21rIn0.Loi_OqKVMnMOBMC2oENREA';
+        
+        const map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/outdoors-v12',
+            center: [12.05, 46.54],
+            zoom: 10.5
+        });
+
+        map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+        const restaurants = [
+            // Your Hotel (blue)
+            { name: 'Rosapetra SPA Resort', coords: [12.1430, 46.5163], type: 'hotel', meta: 'Your home base' },
+            
+            // Mountain Huts (green)
+            { name: 'Rifugio Scoiattoli', coords: [12.0550, 46.5290], type: 'rifugio', meta: '2,255m · Cinque Torri' },
+            { name: 'Rifugio Averau', coords: [12.0250, 46.5150], type: 'rifugio', meta: '2,413m · Falzarego Pass' },
+            { name: 'El Brite de Larieto', coords: [12.1200, 46.5450], type: 'rifugio', meta: 'Michelin Listed' },
+            
+            // Locals' Tables (gold)
+            { name: 'Al Camin', coords: [12.1500, 46.5420], type: 'local', meta: 'Alverà · Michelin Listed' },
+            { name: 'Tivoli', coords: [12.1380, 46.5380], type: 'local', meta: 'Cortina · Michelin Listed' },
+            { name: 'Pontejel Bierstube Forst', coords: [12.1420, 46.5395], type: 'local', meta: 'Cortina · Alto Adige cuisine' },
+            { name: 'Ra Stua', coords: [12.1320, 46.5360], type: 'local', meta: 'Cortina · Game specialist' },
+            
+            // Michelin Stars (red)
+            { name: 'St. Hubertus ★★★', coords: [11.9300, 46.5700], type: 'star', meta: 'San Cassiano · ~30 min' },
+            { name: 'La Stüa de Michil ★', coords: [11.8700, 46.5450], type: 'star', meta: 'Corvara · ~25 min' },
+            { name: 'SanBrite ★', coords: [12.1250, 46.5280], type: 'star', meta: 'Cortina · Farm-to-table' },
+            { name: 'Porcino ★', coords: [11.8850, 46.6050], type: 'star', meta: 'Badia · ~35 min' },
+            { name: 'AlpiNN', coords: [11.7600, 46.7400], type: 'star', meta: 'Brunico · 2,275m · ~45 min' }
+        ];
+
+        restaurants.forEach(r => {
+            const el = document.createElement('div');
+            el.className = 'marker marker-' + r.type;
+            
+            const popup = new mapboxgl.Popup({ offset: 25 })
+                .setHTML(`<h4>${r.name}</h4><p>${r.meta}</p>`);
+            
+            new mapboxgl.Marker(el)
+                .setLngLat(r.coords)
+                .setPopup(popup)
+                .addTo(map);
+        });
     </script>
 </body>
 </html>
