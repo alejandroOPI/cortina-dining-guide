@@ -3,457 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cortina d'Ampezzo Dining Guide | Jan 13-15, 2026</title>
-    <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.js'></script>
-    <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.1/mapbox-gl.css' rel='stylesheet' />
+    <title>Cortina d'Ampezzo: A Dining Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        :root {
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Source Serif 4', Georgia, serif;
+            --size-sm: clamp(0.875rem, 0.8rem + 0.4vw, 1rem);
+            --size-base: clamp(1.05rem, 1rem + 0.3vw, 1.2rem);
+            --size-lg: clamp(1.3rem, 1.1rem + 1vw, 1.8rem);
+            --size-xl: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+            --size-2xl: clamp(3rem, 2rem + 5vw, 6rem);
+            --color-bg: #faf8f5;
+            --color-text: #2d2a26;
+            --color-muted: #6b6560;
+            --color-accent: #8b6914;
+            --color-rule: #d8d4cc;
+            --content-width: 680px;
+            --wide-width: 900px;
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
         body {
-            font-family: 'Georgia', serif;
-            background: #faf9f7;
-            color: #2c2c2c;
-            line-height: 1.7;
+            margin: 0;
+            font-family: var(--font-body);
+            font-size: var(--size-base);
+            line-height: 1.8;
+            color: var(--color-text);
+            background: var(--color-bg);
         }
-        
-        header {
-            background: linear-gradient(135deg, #1a365d 0%, #2d4a6d 100%);
-            padding: 3rem 2rem;
-            text-align: center;
-            color: white;
+        img { display: block; max-width: 100%; height: auto; }
+        a {
+            color: inherit;
+            text-decoration-color: var(--color-rule);
+            text-underline-offset: 0.15em;
+            transition: text-decoration-color 0.2s;
         }
-        
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 400;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
-        }
-        
-        .subtitle {
-            font-size: 1.1rem;
-            opacity: 0.9;
-            font-style: italic;
-        }
-        
-        .context-box {
-            background: rgba(255,255,255,0.1);
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            display: inline-block;
-            margin-top: 1.5rem;
-            font-size: 0.95rem;
-        }
-        
-        #map {
-            width: 100%;
-            height: 400px;
-        }
-        
+        a:hover { text-decoration-color: var(--color-accent); }
         main {
-            max-width: 800px;
+            max-width: var(--wide-width);
             margin: 0 auto;
-            padding: 2rem;
+            padding: 0 1.5rem;
         }
-        
-        .intro {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            padding-bottom: 2rem;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .category {
-            margin-bottom: 3rem;
-        }
-        
-        .category h2 {
-            font-size: 1.4rem;
+        article { padding-bottom: 6rem; }
+        section { margin: 6rem 0; scroll-margin-top: 2rem; }
+        h1, h2, h3 {
+            font-family: var(--font-display);
             font-weight: 400;
-            color: #1a365d;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #1a365d;
+            line-height: 1.1;
         }
-        
-        .restaurant {
-            background: white;
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        .hero {
+            text-align: center;
+            padding: 8rem 0 4rem;
         }
-        
-        .restaurant h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
+        .hero__title {
+            font-size: var(--size-2xl);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+        .hero__subtitle {
+            font-family: var(--font-display);
+            font-size: var(--size-lg);
+            font-style: italic;
+            color: var(--color-muted);
+            margin: 0;
+        }
+        .chapter {
+            max-width: var(--content-width);
+            margin: 0 auto;
+        }
+        .chapter__number {
+            font-family: var(--font-display);
+            font-size: var(--size-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--color-muted);
             margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
         }
-        
-        .restaurant h3 a {
-            color: #2c2c2c;
+        .chapter__title {
+            font-size: var(--size-xl);
+            margin: 0 0 2rem;
+        }
+        .chapter p {
+            margin: 1.5rem 0;
+            text-align: justify;
+            hyphens: auto;
+        }
+        .restaurant {
+            margin: 2.5rem 0;
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--color-rule);
+        }
+        .restaurant__name {
+            font-family: var(--font-display);
+            font-size: var(--size-lg);
+            font-weight: 500;
+            margin: 0 0 0.5rem;
+        }
+        .restaurant__name a {
             text-decoration: none;
         }
-        
-        .restaurant h3 a:hover {
-            color: #1a365d;
+        .restaurant__name a:hover {
+            color: var(--color-accent);
         }
-        
-        .tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
+        .restaurant__meta {
+            font-size: var(--size-sm);
+            color: var(--color-muted);
             margin-bottom: 0.75rem;
         }
-        
-        .tag {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.6rem;
+        .restaurant__description {
+            margin: 0;
+        }
+        .divider {
+            text-align: center;
+            margin: 4rem 0;
+            color: var(--color-muted);
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+        }
+        .art-figure {
+            margin: 4rem 0;
+            text-align: center;
+        }
+        .art-figure img {
+            margin: 0 auto;
+            max-height: 500px;
+            width: auto;
+        }
+        .art-figure figcaption {
+            font-size: var(--size-sm);
+            color: var(--color-muted);
+            font-style: italic;
+            margin-top: 1rem;
+        }
+        .pullquote {
+            font-family: var(--font-display);
+            font-size: var(--size-lg);
+            font-style: italic;
+            text-align: center;
+            max-width: 600px;
+            margin: 3rem auto;
+            color: var(--color-muted);
+        }
+        .note {
+            background: rgba(139, 105, 20, 0.08);
+            padding: 1.5rem 2rem;
             border-radius: 4px;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            margin: 2rem 0;
+            font-size: var(--size-sm);
         }
-        
-        .tag-book { background: #2d5a27; color: white; }
-        .tag-walkin { background: #6b6560; color: white; }
-        .tag-wine { background: #722f37; color: white; }
-        .tag-view { background: #3182ce; color: white; }
-        .tag-local { background: #805ad5; color: white; }
-        .tag-michelin { background: #c53030; color: white; }
-        
-        .description {
-            color: #4a4a4a;
-            margin-bottom: 0.75rem;
+        .note strong {
+            color: var(--color-accent);
         }
-        
-        .meta {
-            font-size: 0.9rem;
-            color: #666;
-        }
-        
-        .meta a {
-            color: #1a365d;
-        }
-        
-        .price {
-            font-weight: 600;
-            color: #2d5a27;
-        }
-        
-        .day-plan {
-            background: #f7fafc;
-            border-left: 4px solid #1a365d;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            border-radius: 0 8px 8px 0;
-        }
-        
-        .day-plan h3 {
-            font-size: 1.1rem;
-            margin-bottom: 0.75rem;
-            color: #1a365d;
-        }
-        
-        .day-plan ul {
-            list-style: none;
-            padding: 0;
-        }
-        
-        .day-plan li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        
-        .day-plan li:last-child {
-            border-bottom: none;
-        }
-        
-        .verification {
-            background: #f0fff4;
-            border: 1px solid #9ae6b4;
-            padding: 1rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
-            font-size: 0.9rem;
-        }
-        
-        .verification strong {
-            color: #276749;
-        }
-        
         footer {
             text-align: center;
-            padding: 2rem;
-            color: #666;
-            font-size: 0.9rem;
-            border-top: 1px solid #ddd;
+            padding: 4rem 0;
+            color: var(--color-muted);
+            font-size: var(--size-sm);
         }
-        
         @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            main { padding: 1rem; }
-            .restaurant { padding: 1rem; }
+            .hero { padding: 4rem 0 2rem; }
+            section { margin: 4rem 0; }
+            .restaurant { padding-left: 1rem; }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>CORTINA D'AMPEZZO</h1>
-        <p class="subtitle">A Dining Guide for the Dolomites</p>
-        <div class="context-box">
-            January 13-15, 2026 | Babymoon at Rosapetra SPA Resort<br>
-            <small>Pregnancy-safe selections | No raw fish</small>
-        </div>
-    </header>
-
-    <div id="map"></div>
-
     <main>
-        <div class="verification">
-            <strong>Verified:</strong> All restaurants checked on Google Maps, January 12, 2026. 
-            Most restaurants in Cortina close Mondays - your dates (Tue-Thu) are ideal.
-        </div>
+        <article>
+            <header class="hero">
+                <h1 class="hero__title">Cortina d'Ampezzo</h1>
+                <p class="hero__subtitle">A Dining Guide for the Dolomites</p>
+                <p style="margin-top: 2rem; color: var(--color-muted); font-size: var(--size-sm);">January 13–15, 2026</p>
+            </header>
 
-        <p class="intro">
-            Cortina is a ski town, not a culinary destination. But there's good food here if you know where to look. 
-            The mountain huts (rifugi) often serve better, more honest food than the fancy hotel restaurants.
-            Traditional Ampezzo cuisine leans Tyrolean: dumplings, game, polenta, hearty alpine fare perfect after a day on the slopes.
-        </p>
+            <figure class="art-figure">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg/800px-Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg" alt="Wanderer above the Sea of Fog by Caspar David Friedrich">
+                <figcaption>Caspar David Friedrich, "Wanderer above the Sea of Fog" (1818)</figcaption>
+            </figure>
 
-        <section class="category">
-            <h2>The Best of Cortina</h2>
-            
-            <div class="restaurant">
-                <h3>
-                    <a href="https://maps.google.com/?q=Ristorante+Tivoli+Cortina" target="_blank">Tivoli</a>
-                </h3>
-                <div class="tags">
-                    <span class="tag tag-michelin">Michelin Star</span>
-                    <span class="tag tag-book">Reserve</span>
-                    <span class="tag tag-wine">Wine</span>
+            <!-- CHAPTER I -->
+            <section class="chapter" id="rifugi">
+                <p class="chapter__number">Chapter I</p>
+                <h2 class="chapter__title">The Mountain Huts</h2>
+                
+                <p>There is a particular kind of honesty in food served at altitude. The rifugi of the Dolomites—those mountain huts perched on impossible slopes—have no room for pretension. What arrives at your table was likely carried up by cable or mule. It must nourish skiers, hikers, the frozen and the exhausted. It must be simple because complexity is a luxury that doesn't survive the climb.</p>
+
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://maps.google.com/?q=Rifugio+Scoiattoli+Cortina" target="_blank">Rifugio Scoiattoli</a></h3>
+                    <p class="restaurant__meta">2,255m · Cinque Torri · €€</p>
+                    <p class="restaurant__description">Reachable by the Cinque Torri chairlift. The views of the five towers are theatrical, but the canederli—bread dumplings in broth—are what you'll remember. Mountain cooking stripped to its essence.</p>
                 </div>
-                <p class="description">
-                    Chef Graziano Prest's refined take on Dolomite cuisine. The only Michelin star in Cortina, but not pretentious - 
-                    warm alpine atmosphere with views. Menu showcases local ingredients with sophisticated technique. 
-                    Worth the splurge for a special dinner.
-                </p>
-                <p class="meta">
-                    Località Lacedel, 34 | <span class="price">€100+/person</span> | 
-                    <a href="tel:+390436866400">+39 0436 866400</a> | Opens 7pm
-                </p>
-            </div>
 
-            <div class="restaurant">
-                <h3>
-                    <a href="https://maps.google.com/?q=Al+Camin+Cortina" target="_blank">Al Camin</a>
-                </h3>
-                <div class="tags">
-                    <span class="tag tag-local">Local Favorite</span>
-                    <span class="tag tag-book">Reserve</span>
-                    <span class="tag tag-wine">Wine</span>
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://maps.google.com/?q=Rifugio+Averau+Cortina" target="_blank">Rifugio Averau</a></h3>
+                    <p class="restaurant__meta">2,413m · Falzarego Pass · €€</p>
+                    <p class="restaurant__description">Similar honesty at higher altitude. Polenta and wild game that taste of the place itself. Go for lunch. Linger. Watch the peaks turn gold.</p>
                 </div>
-                <p class="description">
-                    Chef Fabio Pompanin's cozy restaurant in Alverà. Consistently rated the best "everyday" fine dining in Cortina by locals. 
-                    Traditional dishes executed perfectly - casunziei, game, dumplings. Wooden interiors, fireplace, exactly what you want 
-                    on a cold mountain evening.
-                </p>
-                <p class="meta">
-                    Località Alverà, 99 | <span class="price">€50-70/person</span> | 
-                    <a href="tel:+390436862010">+39 0436 862010</a> | Tue-Sun 12pm & 7pm
-                </p>
-            </div>
-        </section>
 
-        <section class="category">
-            <h2>Mountain Huts (Rifugi)</h2>
-            <p style="margin-bottom: 1.5rem; color: #666; font-style: italic;">
-                The soul of Dolomite dining. Reach these by ski lift or snowshoe, eat hearty alpine food with stunning views.
-            </p>
-            
-            <div class="restaurant">
-                <h3>
-                    <a href="https://maps.google.com/?q=Rifugio+Scoiattoli+Cortina" target="_blank">Rifugio Scoiattoli</a>
-                </h3>
-                <div class="tags">
-                    <span class="tag tag-view">Cinque Torri Views</span>
-                    <span class="tag tag-walkin">Walk-in</span>
-                    <span class="tag tag-wine">Wine</span>
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://maps.google.com/?q=El+Brite+de+Larieto+Cortina" target="_blank">El Brite de Larieto</a></h3>
+                    <p class="restaurant__meta">Cortina · Michelin Listed · €€€</p>
+                    <p class="restaurant__description">Technically a rifugio but feels more like a destination. The Michelin inspectors found it. So did the locals. Fabio Pompanin's cooking is rooted in Ladin tradition—the indigenous cuisine of these valleys—but executed with precision that belies the rustic setting.</p>
                 </div>
-                <p class="description">
-                    At the base of the iconic Cinque Torri rock towers. Cozy rooms with ceramic stoves, large sun terrace for lunch. 
-                    High-quality food and wines, surprisingly refined for a mountain hut. Perfect for a ski lunch with one of the 
-                    best views in the Dolomites.
-                </p>
-                <p class="meta">
-                    Cinque Torri, 2137m | <span class="price">€25-40/person</span> | Lift access from Bai de Dones
-                </p>
-            </div>
+            </section>
 
-            <div class="restaurant">
-                <h3>
-                    <a href="https://maps.google.com/?q=Rifugio+Averau+Cortina" target="_blank">Rifugio Averau</a>
-                </h3>
-                <div class="tags">
-                    <span class="tag tag-view">Panoramic</span>
-                    <span class="tag tag-local">Family-Run</span>
+            <p class="divider">· · ·</p>
+
+            <!-- CHAPTER II -->
+            <section class="chapter" id="locals">
+                <p class="chapter__number">Chapter II</p>
+                <h2 class="chapter__title">The Locals' Tables</h2>
+                
+                <p>Every ski resort has its tourist restaurants and its locals' secrets. Cortina, being Cortina, has more of the former than most. But the latter exist, and they're worth finding.</p>
+
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://maps.google.com/?q=Al+Camin+Cortina" target="_blank">Al Camin</a></h3>
+                    <p class="restaurant__meta">Alverà · Michelin Listed · €€</p>
+                    <p class="restaurant__description">The answer to "where do Cortinesi actually eat?" Away from the centro, in a warm wooden room that feels like a family's dining room—because it was. The casunziei (beet-filled pasta) are made the way they've always been made. The service assumes you'll stay a while.</p>
                 </div>
-                <p class="description">
-                    Traditional recipes passed down through generations - try the "Cappelli d'Alpino" pasta or the pheasant timbale. 
-                    Historic rifugio with incredible 360° Dolomite views. More rustic than Scoiattoli, equally memorable.
-                </p>
-                <p class="meta">
-                    Averau, 2413m | <span class="price">€20-35/person</span> | 
-                    <a href="https://www.rifugioaverau.it" target="_blank">rifugioaverau.it</a>
-                </p>
-            </div>
-        </section>
 
-        <section class="category">
-            <h2>In Town - Casual</h2>
-            
-            <div class="restaurant">
-                <h3>
-                    <a href="https://maps.google.com/?q=Il+Vizietto+Cortina" target="_blank">Il Vizietto di Cortina</a>
-                </h3>
-                <div class="tags">
-                    <span class="tag tag-walkin">Walk-in OK</span>
-                    <span class="tag tag-local">Local Crowd</span>
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://maps.google.com/?q=Ristorante+Tivoli+Cortina" target="_blank">Tivoli</a></h3>
+                    <p class="restaurant__meta">Cortina · Michelin Listed · €€€€</p>
+                    <p class="restaurant__description">Walks a careful line between fine and casual. Chef Graziano Prest has been here for decades, earning a reputation for consistency in a town where restaurants come and go with the seasons. The tasting menus are serious without being solemn. The wine list is deep.</p>
                 </div>
-                <p class="description">
-                    Roman pastas in the Dolomites. When you want a break from dumplings and game, this is your spot for proper 
-                    carbonara, amatriciana, cacio e pepe. Central location on Corso Italia, always buzzing. 
-                    Over 3,000 Google reviews and still maintaining quality.
-                </p>
-                <p class="meta">
-                    Corso Italia, 53 | <span class="price">€20-40/person</span> | 
-                    <a href="tel:+390436867369">+39 0436 867369</a> | Opens 12pm
-                </p>
-            </div>
 
-            <div class="restaurant">
-                <h3>
-                    <a href="https://maps.google.com/?q=Ra+Stua+Cortina" target="_blank">Restaurant Ra Stua</a>
-                </h3>
-                <div class="tags">
-                    <span class="tag tag-book">Reserve</span>
-                    <span class="tag tag-local">Traditional</span>
+                <div class="pullquote">"In the mountains, pretension doesn't survive the altitude."</div>
+
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://maps.google.com/?q=Pontejel+Bierstube+Forst+Cortina" target="_blank">Pontejel Bierstube Forst</a></h3>
+                    <p class="restaurant__meta">Cortina · €€</p>
+                    <p class="restaurant__description">The name misleads. It's actually a refined restaurant serving Alto Adige cuisine with Austrian influences—think speck, schüttelbrot, and dishes that warm you from the inside. The "bierstube" part is simply honesty about the excellent local beers on tap.</p>
                 </div>
-                <p class="description">
-                    Classic Cortina institution. Known for exceptional beef and traditional Ampezzo dishes. 
-                    Old-school service, wood-paneled rooms, the kind of place with regulars who've been coming for decades.
-                    Family warmth mentioned in every review.
-                </p>
-                <p class="meta">
-                    Via Grohmann, 2 | <span class="price">€40-60/person</span> | 
-                    <a href="tel:+390436868341">+39 0436 868341</a> | Tue-Sun 12pm & 7pm
-                </p>
-            </div>
 
-            <div class="restaurant">
-                <h3>
-                    <a href="https://maps.google.com/?q=Pontejel+Bierstube+Forst+Cortina" target="_blank">Pontejel Bierstube Forst</a>
-                </h3>
-                <div class="tags">
-                    <span class="tag tag-walkin">Walk-in</span>
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://maps.google.com/?q=Ra+Stua+Cortina" target="_blank">Ra Stua</a></h3>
+                    <p class="restaurant__meta">Cortina · €€€</p>
+                    <p class="restaurant__description">Deserves mention for its way with game. Venison, boar, hare—whatever the hunters bring, they prepare with respect. Rustic but not rough.</p>
                 </div>
-                <p class="description">
-                    Don't let the "bierstube" name fool you - this isn't a loud beer hall. Quiet restaurant serving 
-                    excellent Tyrolean and Veneto cuisine with great Forst beer. Central location, reasonable prices, 
-                    locals' go-to for a simple good meal.
-                </p>
-                <p class="meta">
-                    Centro | <span class="price">€25-40/person</span> | Tue-Sun
-                </p>
-            </div>
-        </section>
+            </section>
 
-        <section class="category">
-            <h2>Day-by-Day Suggestions</h2>
-            
-            <div class="day-plan">
-                <h3>Tuesday, January 13 - Arrival Day</h3>
-                <ul>
-                    <li><strong>Lunch:</strong> Il Vizietto (casual, central, quick)</li>
-                    <li><strong>Dinner:</strong> Al Camin (reserve ahead - perfect first night welcome)</li>
-                </ul>
-            </div>
+            <p class="divider">· · ·</p>
 
-            <div class="day-plan">
-                <h3>Wednesday, January 14 - Ski Day</h3>
-                <ul>
-                    <li><strong>Lunch:</strong> Rifugio Scoiattoli (ski to Cinque Torri area)</li>
-                    <li><strong>Dinner:</strong> Tivoli (your splurge night - make reservation!)</li>
-                </ul>
-            </div>
+            <!-- CHAPTER III -->
+            <section class="chapter" id="stars">
+                <p class="chapter__number">Chapter III</p>
+                <h2 class="chapter__title">The Stars</h2>
+                
+                <p>The Dolomites have become a destination for serious dining, not despite their remoteness but because of it. The best chefs here cook with what the mountains give them—and the mountains give generously if you know where to look.</p>
 
-            <div class="day-plan">
-                <h3>Thursday, January 15 - Departure</h3>
-                <ul>
-                    <li><strong>Lunch:</strong> Ra Stua or Pontejel (traditional, satisfying before the drive)</li>
-                </ul>
-            </div>
-        </section>
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://www.rosalpina.it/st-hubertus/" target="_blank">St. Hubertus ★★★</a></h3>
+                    <p class="restaurant__meta">San Cassiano · ~30 min · €€€€</p>
+                    <p class="restaurant__description">Norbert Niederkofler earned three Michelin stars by asking a radical question: what if a restaurant in the Alps only served what could be grown, raised, or foraged in the Alps? His "Cook the Mountain" philosophy isn't a gimmick; it's a discipline. Expect fermentation, preservation, and flavors you won't find anywhere else. Book well in advance.</p>
+                </div>
 
-        <section class="category">
-            <h2>Notes for Alejandra</h2>
-            <p style="background: #fff5f5; padding: 1rem; border-radius: 8px; border: 1px solid #feb2b2;">
-                All selections are pregnancy-safe. The mountain cuisine here is naturally pregnancy-friendly - 
-                cooked meats, dumplings, polenta, well-done game. Avoid: any tartare if offered, raw-milk cheeses 
-                unless you're comfortable, Spritz (obviously). The rifugi tend to be well-heated but bring layers.
-            </p>
-        </section>
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://www.hotel-laperla.it/en/restaurants/la-stua-de-michil/" target="_blank">La Stüa de Michil ★</a></h3>
+                    <p class="restaurant__meta">Corvara · Hotel La Perla · ~25 min · €€€€</p>
+                    <p class="restaurant__description">One Michelin star, inside the legendary Hotel La Perla. Simone Cantafio's cooking is refined Ladin cuisine, the indigenous gastronomy of these valleys. The stüa (parlor) setting is intimate, the wine cellar extraordinary, and the tasting menu a journey through the territory.</p>
+                </div>
+
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://maps.google.com/?q=SanBrite+Cortina" target="_blank">SanBrite ★</a></h3>
+                    <p class="restaurant__meta">Cortina · Pian da Lago · €€€€</p>
+                    <p class="restaurant__description">Riccardo Gaspari's farm-to-table project takes the concept literally: the restaurant sits on his family's farm. One star, earned through obsessive attention to local ingredients. The location—a 10-minute drive from centro—makes it feel like a pilgrimage. Worth it.</p>
+                </div>
+
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://maps.google.com/?q=Porcino+Badia" target="_blank">Porcino ★</a></h3>
+                    <p class="restaurant__meta">Badia · ~35 min · €€€€</p>
+                    <p class="restaurant__description">Chef Andrea Irsara's one-starred restaurant focuses on mushrooms, obviously, but more broadly on the forests and meadows of Alta Badia. Creative, seasonal, worth the drive.</p>
+                </div>
+
+                <div class="restaurant">
+                    <h3 class="restaurant__name"><a href="https://www.alpinn.it/" target="_blank">AlpiNN</a></h3>
+                    <p class="restaurant__meta">Brunico · MMM Corones · 2,275m · ~45 min · €€€</p>
+                    <p class="restaurant__description">Norbert Niederkofler's more casual sibling to St. Hubertus, at 2,275 meters inside the MMM Corones museum. Glass walls overlooking the Kronplatz slopes. "Cook the Mountain" made accessible.</p>
+                </div>
+            </section>
+
+            <p class="divider">· · ·</p>
+
+            <!-- PRACTICAL NOTES -->
+            <section class="chapter" id="notes">
+                <p class="chapter__number">Chapter IV</p>
+                <h2 class="chapter__title">Practical Notes</h2>
+                
+                <div class="note">
+                    <strong>Reservations:</strong> You are visiting during ski season. The good restaurants book up. For starred places, reserve days or weeks in advance. For the rifugi, arrive early—they don't take reservations, and space is limited.
+                </div>
+
+                <div class="note">
+                    <strong>Pregnancy considerations:</strong> Most Italian restaurants are gracious about accommodating dietary needs. Verify raw fish and certain cheeses. The mountain cuisine, being heavy on cooked meats and vegetables, tends to be naturally pregnancy-friendly.
+                </div>
+
+                <div class="note">
+                    <strong>Getting there:</strong> Cortina is in the Veneto region but feels more Austrian than Italian. Most surrounding starred restaurants (San Cassiano, Corvara, Badia) are in Alto Adige/South Tyrol. The drives are beautiful but plan extra time for mountain roads.
+                </div>
+            </section>
+
+        </article>
     </main>
 
     <footer>
-        <p>Prepared by Clawdius | Verified January 12, 2026</p>
-        <p style="margin-top: 0.5rem; font-size: 0.8rem;">
-            Hotel: Rosapetra SPA Resort, San Vito di Cadore (10 min from Cortina)
-        </p>
+        <p>Prepared for Alejandro & Alejandra · Babymoon 2026</p>
     </footer>
-
-    <script>
-        mapboxgl.accessToken = 'pk.eyJ1IjoiYW1hemE4NyIsImEiOiJjbWs0Y29nZWwwNXpwM3ByNTB1OWJ6a21rIn0.Loi_OqKVMnMOBMC2oENREA';
-        
-        const map = new mapboxgl.Map({
-            container: 'map',
-            style: 'mapbox://styles/mapbox/outdoors-v12',
-            center: [12.1357, 46.5369], // Cortina center
-            zoom: 12
-        });
-
-        const locations = [
-            { name: 'Rosapetra SPA Resort', coords: [12.1851, 46.4567], color: '#c53030', type: 'hotel' },
-            { name: 'Tivoli', coords: [12.1180, 46.5320], color: '#2d5a27' },
-            { name: 'Al Camin', coords: [12.1590, 46.5450], color: '#2d5a27' },
-            { name: 'Il Vizietto', coords: [12.1357, 46.5369], color: '#805ad5' },
-            { name: 'Ra Stua', coords: [12.1340, 46.5385], color: '#805ad5' },
-            { name: 'Rifugio Scoiattoli', coords: [12.0542, 46.5236], color: '#3182ce' },
-            { name: 'Rifugio Averau', coords: [12.0400, 46.5190], color: '#3182ce' },
-            { name: 'Pontejel', coords: [12.1360, 46.5370], color: '#805ad5' }
-        ];
-
-        map.on('load', () => {
-            locations.forEach(loc => {
-                const el = document.createElement('div');
-                el.style.cssText = `
-                    width: ${loc.type === 'hotel' ? '16px' : '12px'};
-                    height: ${loc.type === 'hotel' ? '16px' : '12px'};
-                    background: ${loc.color};
-                    border-radius: 50%;
-                    border: 2px solid white;
-                    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-                `;
-                
-                new mapboxgl.Marker(el)
-                    .setLngLat(loc.coords)
-                    .setPopup(new mapboxgl.Popup({ offset: 25 }).setHTML(`<strong>${loc.name}</strong>`))
-                    .addTo(map);
-            });
-        });
-    </script>
 </body>
 </html>
